@@ -1,5 +1,8 @@
 package org.java.spring.pizzeria.model;
 
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,12 +16,33 @@ public class Pizza
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	
+	@Column(name="name", nullable=false)
 	private String name;
+	
+	@Column(name="description", nullable=false)
 	private String description;
+	
 	private String photo;
+	
+	@Column(name="price", nullable=false)
 	private Float price;
 	
+	private LocalDateTime updatedAt;
 	
+	
+	/**
+	 * @return the updatedAt
+	 */
+	public LocalDateTime getUpdatedAt() {
+		return updatedAt;
+	}
+	/**
+	 * @param updatedAt the updatedAt to set
+	 */
+	public void setUpdatedAt(LocalDateTime updatedAt) {
+		this.updatedAt = updatedAt;
+	}
 	/**
 	 * @return the id
 	 */
