@@ -2,65 +2,50 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	<head th:insert="~{fragments/fragments :: head}"></head>
 	<body>
-		<header th:insert="~{fragments/navbar:: navbar('pizzas')}"></header>		
+		<header th:insert="~{fragments/navbar :: navbar('pizzas')}"></header>		
 		<main class="container">	
-					<h3 class="text-center py-4">Here we go</h3>
+			<h1 class="text-center py-5 mb-3">
+				A SLICE OF CULINARY ELEGANCE
+			</h1>
+			
+			<!--<div class="row justify-content-center w-100">
+			   <div class="input-group mb-3 col-md-6 col-lg-4">
+			     <input type="text" class="form-control" placeholder="Type in the pizza you're craving" aria-label="Recipient's username" aria-describedby="button-addon2">
+			     <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="window.location.href='http://localhost:8080/pizzas';">
+			       UP
+			     </button>
+			   </div>
+			 </div> -->
+			
+			<!-- Check if there are pizzas available -->
+			<th:block th:if="${pizzas.size() >= 1}">
+				<div class="row">
 					
-					<!-- Check if there are pizzas available -->
-					<th:block th:if="${pizzas.size() >= 1}" >
-						<div class="row">
-							
-							<!-- Loop on each pizza -->
-							<div class="col-lg-3 col-md-4 col-sm-6 mb-4" th:each="pizza : ${pizzas}">
-								<div class="card h-100 shadow-sm d-flex flex-column">
-									<img th:src="${pizza.photo}" class="card-img-top img-fluid w-100" style="height: 200px; object-fit: cover;" th:alt="'Image of pizza: ' + ${pizza.name}">
-								    
-								    <div class="card-body d-flex flex-column">
-								        <h5 class="card-title" th:text="${pizza.name}"></h5>
-								        <p class="card-text text-muted" th:text="${pizza.description}"></p>
-								        
-										<!-- Div with price and button aligned to bottom -->
-								        <div class="mt-auto d-flex justify-content-between align-items-center">
-								            <span class="h5 text-primary" th:text="'€ ' + ${pizza.price}"></span>
-								            <a href="#" class="btn btn-outline-primary btn-sm">Order Now</a>
-								        </div>
-							   		</div>
-								</div>
-							</div>
+					<!-- Loop on each pizza -->
+					<div class="col-lg-3 col-md-4 col-sm-6 mb-4" th:each="pizza : ${pizzas}" th:object="${pizza}">
+						<div class="card h-100 shadow-sm d-flex flex-column">
+							<img th:src="*{photo}" class="card-img-top img-fluid w-100" style="height: 400px; object-fit: cover;" th:alt="'Image of pizza: ' + *{name}">
+						    
+						    <div class="card-body d-flex flex-column ">
+						        <h5 class="card-title text-center" th:text="*{name}"></h5>
+						        <p class="card-text text-muted" th:text="*{description}"></p>
+						        
+								<!-- Div with price and button aligned to bottom -->
+						        <div class="mt-auto d-flex justify-content-between">
+						            <span class="h5 text-dark" th:text="'€ ' + *{price}"></span>
+						            <a th:href="@{/pizzas/{id}(id=*{id})}" class="btn btn-outline-dark btn-sm">SHOW</a>
+						        </div>
+					   		</div>
 						</div>
-					
-					<!--
-						<table class="table table-striped  table-hover">
-								<thead>
-									<tr>
-										<th>#</th>
-										<td >Photo</td>
-										<th>Name</th>
-										<th>Price</th>
-										<th>Description</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr th:each="pizza : ${pizzas}">
-										<td th:text="${pizza.id}"></td>
-										<td th:src="${pizza.photo}"></td>			
-										<td th:text="${pizza.name}"></td>							
-										<td th:text="${pizza.price}"></td>							
-										<td th:text="${pizza.description}"></td>	
-									</tr>
-								</tbody>
-							</table>
-
-					-->
-
-					</th:block>
-					
-					<!-- Message if no pizzas -->
-					<th:block th:unless="${pizzas.size() > 0}">
-						<h3 class="text-center">Looks like the pizzas took a day off!</h3>						
-					</th:block>
-					
-				
+					</div>
+				</div>	
+			</th:block>
+			
+			<!-- Message if no pizzas -->
+			<th:block th:unless="${pizzas.size() > 0}">
+				<h3 class="text-center">Looks like the pizzas took a day off!</h3>						
+			</th:block>
+		
 		</main>
 		<footer th:replace="~{fragments/fragments :: footer}"></footer>	
 		<th:block th:replace="~{fragments/fragments :: scripts}"></th:block>
