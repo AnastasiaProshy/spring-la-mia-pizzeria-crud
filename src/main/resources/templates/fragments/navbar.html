@@ -17,6 +17,12 @@
 					  <a class="nav-link" href="#" th:href="@{/pizzas}" th:classappend="${ route == 'pizzas' ? 'active' : ' '}">Pizzas</a>
 					</li>
 				  </ul>
+				  
+				  <form class="d-flex" method="GET" th:action="@{/pizzas}">
+			          <input class="form-control me-2" type="text" name="search"  placeholder="Type in your pizza craving" th:value="${pizzaSearch}">
+			          <button class="btn btn-sm btn-outline-secondary" type="submit">UP</button>
+			      </form> 
+				  
 			    </div>
 			  </div>
 			</nav>

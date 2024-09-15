@@ -10,7 +10,7 @@ public interface PizzaRepository extends JpaRepository<Pizza, Integer>
 	// Provides all basic CRUD operations
 	// With the option to add custom methods and features if needed
 	
-	public List<Pizza> findByNameContains(String name);
+	public List<Pizza> findByNameContainingIgnoreCaseOrderByNameAsc(String name);
 	
 	
 }
