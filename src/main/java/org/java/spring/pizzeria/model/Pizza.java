@@ -8,6 +8,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name="pizzas")
@@ -17,26 +20,33 @@ public class Pizza
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
+	@NotNull
+	@NotEmpty
+	@Size(min=2, max=255)
 	@Column(name="name", nullable=false)
 	private String name;
 	
+	@NotNull
+	@NotEmpty
+	@Size(min=4, max=255)
 	@Column(name="description", nullable=false)
 	private String description;
-
-	public void setCreatedAt(Timestamp createdAt) {
-		this.createdAt = createdAt;
-	}
+	
+	@NotNull
+	@NotEmpty
+	@Size(min=5, max=255)
 	private String photo;
 	
+	@NotNull
 	@Column(name="price", nullable=false)
 	private Float price;
 	
+	@NotNull
 	private Boolean available;
 	
 	private Timestamp updatedAt;
 	
 	private Timestamp createdAt;
-
 	
 	
 	/**
@@ -144,4 +154,10 @@ public class Pizza
 		this.updatedAt = updatedAt;
 	}
 
+	/**
+	 * @param createdAt the createdAt to set
+	 */
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
+	}
 }
