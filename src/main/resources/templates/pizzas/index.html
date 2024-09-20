@@ -18,7 +18,7 @@
 			        <div class="col-md-6 order-md-1">
 			            <form th:action="@{/pizzas}" method="GET">
 			                <div class="input-group">
-								<a href="/pizzas/create" class="btn btn-md btn-outline-primary">Create new one</a>
+								<a href="/pizzas/create" class="btn btn-md btn-dark">Create new one</a>
 			                    <input name="search" type="text" class="form-control" placeholder="Type in the pizza you're craving" th:value="${pizzaSearch}">
 			                    <button class="btn btn-outline-dark" type="submit">Search</button>
 			                </div>
@@ -26,7 +26,11 @@
 			        </div>
 			    </div>
 			</div>
-
+			
+			<!-- ALERT -->
+			<th:block th:if="${messageAlert != null}">
+				<dv th:replace="~{fragments/fragments :: alert(${typeAlert}, ${messageAlert})}"></dv>
+			</th:block>
 						
 			<!-- Check if there are pizzas available -->
 			<!-- Loop through pizzas and display only available ones -->
@@ -40,9 +44,43 @@
 					        <p class="card-text text-muted" th:text="*{description}"></p>
 					        
 							<!-- Div with price and button aligned to bottom -->
-					        <div class="mt-auto d-flex justify-content-between">
+							<div class="mt-auto d-flex justify-content-between">
 					            <span class="h5 text-dark" th:text="'€ ' + *{price}"></span>
-					            <a th:href="@{/pizzas/{id}(id=*{id})}" class="btn btn-outline-dark btn-sm">SHOW</a>
+								<div>
+									<!--SHOW-->
+									<a th:href="@{/pizzas/{id}(id=*{id})}" class="btn btn-warning btn-sm">SHOW</a>
+									
+									<!--EDIT-->								
+									<a th:href="@{/pizzas/edit/{id}(id=*{id})}" class="btn btn-success btn-sm">UPDATE</a>
+									
+									<!--DELETE-->
+									<!-- Button trigger modal -->
+									<button type="button" class="btn btn-sm btn-dark" data-bs-toggle="modal" th:data-bs-target="'#delete-modal-' + ${pizza.id}">
+									  DELETE
+									</button>
+									<!-- Modal -->
+									<div class="modal fade" th:id="'delete-modal-' + ${pizza.id}" tabindex="-1" aria-labelledby="delete-modal" aria-hidden="true">
+									  <div class="modal-dialog modal-dialog-centered">
+									    <div class="modal-content">
+									      <div class="modal-header">
+									        <h1 class="modal-title fs-5" id="delete-modal">Deleting <strong>"[[${pizza.name}]]"</strong></h1>
+									        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+									      </div>
+									      <div class="modal-body">
+									        Are you sure you want to permanently delete this pizza? <strong>"[[${pizza.name}]]"</strong>
+									      </div>
+									      <div class="modal-footer">
+									       <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>																		
+											<form class="d-inline-block"
+											th:action="@{/pizzas/delete/{id}(id=${pizza.id})}"
+											method="POST">
+											<button type="submit" class="btn btn-sm btn-danger">
+												DELETE</button>											
+											</form>
+									      </div>
+									    </div>
+									  </div>
+								</div>
 					        </div>
 				   		</div>
 					</div>

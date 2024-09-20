@@ -28,7 +28,7 @@ public class Pizza
 	
 	@NotNull
 	@NotEmpty
-	@Size(min=4, max=255)
+	@Size(min=4, max=255)	
 	@Column(name="description", nullable=false)
 	private String description;
 	

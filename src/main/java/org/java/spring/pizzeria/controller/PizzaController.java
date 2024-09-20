@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.validation.Valid;
 	
@@ -29,7 +30,7 @@ import jakarta.validation.Valid;
 		
 		
 		@GetMapping()
-		public String index(Model model, @RequestParam(name = "search", required = false) String search)
+		public String index(Model model, @RequestParam(required = false) String search)
 		{
 			model.addAttribute("pizzaSearch", search);
 			
@@ -54,7 +55,7 @@ import jakarta.validation.Valid;
 		
 		
 		@GetMapping ("/{id}")
-		public String show (@PathVariable("id") Integer id,  Model model)
+		public String show (@PathVariable Integer id,  Model model)
 		{
 			model.addAttribute("pizza", repo.findById(id).get());
 			return "/pizzas/show";
@@ -69,6 +70,9 @@ import jakarta.validation.Valid;
 //		}
 		
 		
+		
+		//CREATE
+		
 		@GetMapping("create")
 		public String create(Model model)
 		{
@@ -77,9 +81,12 @@ import jakarta.validation.Valid;
 		}
 		
 		
+		//STORE
+		
 		@PostMapping("/create")
 		public String store(@Valid @ModelAttribute("pizza") Pizza formPizza, 
 							BindingResult bindingResult,
+							RedirectAttributes attributes,
 							Model model)
 		{
 			if(bindingResult.hasErrors())
@@ -88,16 +95,68 @@ import jakarta.validation.Valid;
 			}
 			else
 			{
+				//data+
 				repo.save(formPizza);
+				
+				attributes.addFlashAttribute("typeAlert", "success");
+				attributes.addFlashAttribute("messageAlert", formPizza.getName() + " has been added successfully");
+				
 				return "redirect:/pizzas";
 			}
 		}
 	
 		
+		//EDIT
+		
+		@GetMapping ("edit/{id}")
+		public String edit(@PathVariable("id") Integer id, Model model)
+		{
+			model.addAttribute("pizza", repo.findById(id).get());	
+			//Pizza pizzaToEdit = repo.findById(id).get();
+			//model.addAttribute("pizza", pizzaToEdit);	
+			
+			return "/pizzas/edit";
+		}
 		
 		
+		//UPDATE
+		
+		@PostMapping("/edit/{id}")
+		public String update(@Valid @ModelAttribute("pizza") Pizza updatedFormPizza,
+							BindingResult bindingResult,
+							RedirectAttributes attributes,
+							Model model)
+		{
+			if (bindingResult.hasErrors())
+			{
+				return "/pizza/edit";
+			}
+			else
+			{
+				repo.save(updatedFormPizza);
+				
+				attributes.addFlashAttribute("typeAlert", "info");
+				attributes.addFlashAttribute("messageAlert", "Great news! '" + updatedFormPizza.getName() + "' has been updated successfully");
+				
+				return"redirect:/pizzas";
+			}
+		}
 		
 		
+		//DELETE
+		@PostMapping("/delete/{id}")
+		public String delete(@PathVariable("id") Integer id,
+							RedirectAttributes attributes)
+		{	
+			Pizza pizzaToDelete = repo.findById(id).get();
+			
+			repo.deleteById(id);
+			
+			attributes.addFlashAttribute("typeAlert", "danger");
+			attributes.addFlashAttribute("messageAlert", "Great news! '" + pizzaToDelete.getName() + "' has been deleted successfully");
+				
+			return "redirect:/pizzas";
+		}
 		
 		
 	}

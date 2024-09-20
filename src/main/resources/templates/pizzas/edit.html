@@ -8,9 +8,9 @@
 				<div class="row">
 					<div class="col-12">
 						
-						<h2 class="text-center py-4 mb-4">
-							CREATE A NEW ONE
-						</h2>	
+						<h3 class="text-center py-4 mb-4">
+							You’re personalizing a <strong>[[${pizza.name}]]</strong>
+						</h3>	
 
 						<div class="row  justify-content-center">
 							<div class="col-6">
@@ -19,7 +19,7 @@
 								<form 
 									id="pizza-form"
 									th:object="${pizza}"
-									th:action="@{/pizzas/create}" 
+									th:action="@{/pizzas/edit/{id} (id = ${pizza.id})}" 
 									method="POST">
 																		
 									<div class="mb-3">
@@ -108,7 +108,7 @@
 									  </div>
 																		
 									<div class="mb-3 d-flex justify-content-between">
-										<input type="submit" class="btn btn-primary btn-lg" value="Create">
+										<input type="submit" class="btn btn-primary btn-lg" value="Update">
 										<input type="reset" class="btn btn-warning btn-lg" value="Reset">
 									</div>
 									
